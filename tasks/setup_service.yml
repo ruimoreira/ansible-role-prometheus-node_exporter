@@ -1,0 +1,31 @@
+---
+
+- name: copy config into place
+  template:
+    src: templates/config.node_exporter.j2
+    dest: /etc/default/node_exporter
+    owner: root
+    group: root
+  when: ansible_distribution == "Debian"
+
+- name: ensure /var/lib directories exist
+  file:
+    state: directory
+    path: "{{ exporter_dir }}"
+    owner: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_group }}"
+
+- name: ensure textfile collectir dir exists
+  file:
+    state: directory
+    path: "{{ exporter_dir }}/textfile_collector"
+    owner: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_group }}"
+
+- name: copy systemd unit file into place
+  template:
+    src: "templates/node_exporter.service_{{ ansible_distribution }}.j2"
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+  notify: enable service

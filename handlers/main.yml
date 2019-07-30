@@ -1,0 +1,9 @@
+---
+# handlers file for ansible-role-prometheus-node_exporter
+- name: enable service
+  systemd:
+    name: node_exporter
+    daemon-reload: yes
+    enabled: yes
+    state: started
+  become: true

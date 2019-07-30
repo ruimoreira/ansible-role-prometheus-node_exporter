@@ -1,0 +1,21 @@
+---
+
+- name: download node exporter files
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
+
+- name: uncompress the node exporter files
+  unarchive:
+    src: /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: copy executable into place
+  copy:
+    src: /tmp/node_exporter-0.18.1.linux-amd64/node_exporter
+    dest: "/usr/sbin/node_exporter"
+    owner: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_group }}"
+    mode: 0755
+    remote_src: yes

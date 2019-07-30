@@ -1,0 +1,12 @@
+---
+
+- name: create node_exporter group
+  group:
+    name: "{{ node_exporter_group }}"
+    state: present
+
+- name: create node_exporter user
+  user:
+    name: "{{ node_exporter_user }}"
+    shell: /sbin/nologin
+    state: present
